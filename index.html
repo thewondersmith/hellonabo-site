@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello Nabo - Safety Intelligence for Your Neighborhood</title>
+  <meta name="description" content="Weekly crime analysis and safety scores for growing American cities. Data-driven insights for residents and relocators.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <h1>👋 HELLO NABO</h1>
+        <p class="tagline">Know your neighborhood</p>
+      </div>
+      <nav>
+        <a href="#cities">Cities</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#subscribe">Subscribe</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h2>Is Your Neighborhood Safe?</h2>
+        <p class="lead">Get weekly safety intelligence with data-driven insights.<br>
+        Free crime analysis, neighborhood breakdowns, and trend reports.</p>
+        
+        <div class="search-box">
+          <input type="text" placeholder="Search your city..." id="citySearch">
+          <button onclick="searchCity()">Find My City</button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Cities Covered</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">10k+</div>
+            <div class="stat-label">Weekly Readers</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">Free</div>
+            <div class="stat-label">Always</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cities" class="cities-section">
+      <div class="container">
+        <h3>Cities We Cover</h3>
+        <p class="section-intro">Weekly safety reports for growing American cities</p>
+        
+        <div class="cities-grid">
+          <a href="/madison-al/" class="city-card">
+            <div class="city-header">
+              <h4>Madison, AL</h4>
+              <span class="safety-badge grade-b">87/100</span>
+            </div>
+            <p class="city-pop">Population: 56,000</p>
+            <p class="city-latest">Latest: Feb 17, 2026</p>
+            <div class="city-arrow">→</div>
+          </a>
+
+          <div class="city-card coming-soon">
+            <div class="city-header">
+              <h4>Decatur, AL</h4>
+              <span class="coming-badge">Coming Soon</span>
+            </div>
+            <p class="city-pop">Population: 55,000</p>
+          </div>
+
+          <div class="city-card coming-soon">
+            <h4>Athens, AL</h4>
+            <span class="coming-badge">Coming Soon</span>
+          </div>
+
+          <div class="city-card coming-soon">
+            <h4>Your City?</h4>
+            <p><a href="mailto:hello@hellonabo.com">Request Coverage →</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="features-section">
+      <div class="container">
+        <h3>What You Get Every Week</h3>
+        
+        <div class="features-grid">
+          <div class="feature">
+            <div class="feature-icon">📊</div>
+            <h4>Safety Score</h4>
+            <p>0-100 grade showing your city's weekly crime rate relative to population and state averages</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🗺️</div>
+            <h4>Neighborhood Analysis</h4>
+            <p>Interactive charts showing which areas had activity, mapped to neighborhoods</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">📈</div>
+            <h4>Trend Intelligence</h4>
+            <p>Is crime increasing or decreasing? Property vs violent breakdown with context</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🚔</div>
+            <h4>Full Blotter</h4>
+            <p>Arrests, incidents, and traffic accidents sourced from official police reports</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🎯</div>
+            <h4>Pattern Detection</h4>
+            <p>Automated analysis finds location clusters, trends, and unusual activity</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">📧</div>
+            <h4>Weekly Delivery</h4>
+            <p>Saturday morning delivery. Website archive always available. No spam, ever.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="audience-section">
+      <div class="container">
+        <h3>Who Uses Hello Nabo?</h3>
+        
+        <div class="audience-grid">
+          <div class="audience-card">
+            <h4>🏠 Home Buyers</h4>
+            <p>"I check Hello Nabo before touring homes. The neighborhood breakdown saved me from making a $400k mistake."</p>
+            <span class="audience-name">— Sarah M., relocated to Madison</span>
+          </div>
+
+          <div class="audience-card">
+            <h4>🏢 Realtors</h4>
+            <p>"I share Hello Nabo with every client. It answers their #1 question with data, not my opinion."</p>
+            <span class="audience-name">— Mike R., Realtor</span>
+          </div>
+
+          <div class="audience-card">
+            <h4>👨‍👩‍👧‍👦 Parents</h4>
+            <p>"Our neighborhood Facebook group links to Hello Nabo every week. Better than rumors and Ring videos."</p>
+            <span class="audience-name">— Jennifer L., Madison resident</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="subscribe" class="subscribe-section">
+      <div class="container">
+        <h3>Get Weekly Updates</h3>
+        <p>New safety report every Saturday. Unsubscribe anytime. No spam.</p>
+        
+        <form
+          action="https://buttondown.email/api/emails/embed-subscribe/hellonabo"
+          method="post"
+          target="popupwindow"
+          class="subscribe-form"
+        >
+          <input type="email" name="email" placeholder="your@email.com" required />
+          <button type="submit">Subscribe Free</button>
+        </form>
+        
+        <p class="privacy-note">
+          <small>Join 10,000+ readers. We never sell your email. <a href="/privacy">Privacy Policy</a></small>
+        </p>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-box">
+          <h3>Local Business?</h3>
+          <p>Reach safety-conscious residents and relocators in your city.</p>
+          <a href="mailto:sponsor@hellonabo.com" class="btn-secondary">Sponsor Your City →</a>
+        </div>
+
+        <div class="cta-box">
+          <h3>Real Estate Agent?</h3>
+          <p>Share data-driven safety intel with every client. Free partnership program.</p>
+          <a href="mailto:realtors@hellonabo.com" class="btn-secondary">Partner With Us →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>👋 HELLO NABO</h4>
+          <p>Safety intelligence for American neighborhoods</p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Product</h5>
+          <ul>
+            <li><a href="#cities">Cities</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="/methodology">Methodology</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="/about">About</a></li>
+            <li><a href="/corrections">Corrections</a></li>
+            <li><a href="/disclaimer">Disclaimer</a></li>
+            <li><a href="/privacy">Privacy</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Contact</h5>
+          <ul>
+            <li><a href="mailto:hello@hellonabo.com">hello@hellonabo.com</a></li>
+            <li><a href="https://twitter.com/hellonabo">Twitter</a></li>
+            <li><a href="https://facebook.com/hellonabo">Facebook</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Hello Nabo. Data from public records. Not affiliated with any police department.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function searchCity() {
+      const query = document.getElementById('citySearch').value.toLowerCase();
+      if (query.includes('madison')) {
+        window.location.href = '/madison-al/';
+      } else {
+        alert('City not yet available. Request coverage at hello@hellonabo.com');
+      }
+    }
+
+    document.getElementById('citySearch').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchCity();
+      }
+    });
+  </script>
+</body>
+</html>
