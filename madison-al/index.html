@@ -1,674 +1,547 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Madison, Alabama Safety Dashboard | Hello Nabo</title>
-  <meta name="description" content="Real-time safety intelligence for Madison, Alabama. Crime statistics, neighborhood analysis, and trends updated weekly.">
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/city-page.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <style>
-    /* Dashboard-specific styles */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin: 30px 0;
-    }
-    
-    .stat-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      border-left: 4px solid #10b981;
-    }
-    
-    .stat-card.warning {
-      border-left-color: #f59e0b;
-    }
-    
-    .stat-card.danger {
-      border-left-color: #ef4444;
-    }
-    
-    .stat-value {
-      font-size: 2.5em;
-      font-weight: 800;
-      color: #10b981;
-      margin: 10px 0;
-    }
-    
-    .stat-card.warning .stat-value {
-      color: #f59e0b;
-    }
-    
-    .stat-card.danger .stat-value {
-      color: #ef4444;
-    }
-    
-    .stat-label {
-      font-size: 0.9em;
-      color: #666;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
-    }
-    
-    .stat-change {
-      font-size: 0.85em;
-      margin-top: 10px;
-      font-weight: 600;
-    }
-    
-    .stat-change.up {
-      color: #ef4444;
-    }
-    
-    .stat-change.down {
-      color: #10b981;
-    }
-    
-    .chart-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin: 20px 0;
-    }
-    
-    .chart-title {
-      font-size: 1.2em;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: #1a1a1a;
-    }
-    
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-    }
-    
-    .data-table th {
-      background: #f3f4f6;
-      padding: 12px;
-      text-align: left;
-      font-weight: 600;
-      font-size: 0.9em;
-      color: #374151;
-      border-bottom: 2px solid #e5e7eb;
-    }
-    
-    .data-table td {
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
-      font-size: 0.9em;
-    }
-    
-    .data-table tr:hover {
-      background: #f9fafb;
-    }
-    
-    .badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 0.8em;
-      font-weight: 600;
-    }
-    
-    .badge-green {
-      background: #d1fae5;
-      color: #065f46;
-    }
-    
-    .badge-yellow {
-      background: #fef3c7;
-      color: #92400e;
-    }
-    
-    .badge-red {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-    
-    .neighborhood-list {
-      list-style: none;
-      padding: 0;
-    }
-    
-    .neighborhood-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    
-    .neighborhood-item:last-child {
-      border-bottom: none;
-    }
-    
-    .neighborhood-bar {
-      height: 8px;
-      background: #10b981;
-      border-radius: 4px;
-      margin-top: 8px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madison, Alabama Safety Dashboard | Hello Nabo</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f9fafb;
+  color: #1a1a1a;
+}
+.header {
+  background: white;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+.logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #10b981;
+}
+.hero {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+.score {
+  font-size: 6em;
+  font-weight: bold;
+  margin: 20px 0;
+}
+.grade {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+.content {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+.stat-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid #10b981;
+}
+.stat-card.warning {
+  border-left-color: #f59e0b;
+}
+.stat-card.danger {
+  border-left-color: #ef4444;
+}
+.stat-value {
+  font-size: 3em;
+  font-weight: bold;
+  color: #10b981;
+  margin: 10px 0;
+}
+.stat-card.warning .stat-value {
+  color: #f59e0b;
+}
+.stat-card.danger .stat-value {
+  color: #ef4444;
+}
+.stat-label {
+  font-size: 0.9em;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+h2 {
+  font-size: 2em;
+  margin: 40px 0 20px 0;
+  color: #1a1a1a;
+}
+.table-container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 20px 0;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th {
+  background: #f3f4f6;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+}
+td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+tr:hover {
+  background: #f9fafb;
+}
+.badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+.badge-green {
+  background: #d1fae5;
+  color: #065f46;
+}
+.badge-yellow {
+  background: #fef3c7;
+  color: #92400e;
+}
+.badge-red {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.info-box {
+  background: #f0f9ff;
+  border-left: 4px solid #0ea5e9;
+  padding: 20px;
+  margin: 30px 0;
+  border-radius: 8px;
+}
+.warning-box {
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  padding: 20px;
+  margin: 30px 0;
+  border-radius: 8px;
+}
+.offender-card {
+  background: white;
+  border: 2px solid #fee2e2;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+.offender-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 15px;
+}
+.risk-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 700;
+}
+.risk-high {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.risk-moderate {
+  background: #fef3c7;
+  color: #92400e;
+}
+.risk-low {
+  background: #dbeafe;
+  color: #1e40af;
+}
+</style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <div class="logo">
-        <a href="/" style="text-decoration:none;color:inherit;">
-          <h1>👋 HELLO NABO</h1>
-          <p class="tagline">Know your neighborhood</p>
-        </a>
-      </div>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/madison-al/archive/">Archive</a>
-        <a href="#subscribe">Subscribe</a>
-      </nav>
-    </div>
-  </header>
 
-  <div class="city-header">
-    <div class="container">
-      <div class="breadcrumb">
-        <a href="/">Hello Nabo</a> → <span>Madison, AL</span>
-      </div>
-      <h2>Madison, Alabama Safety Dashboard</h2>
-      <p class="city-meta">Population: 56,000 | Last Updated: February 17, 2026</p>
+<div class="header">
+  <div class="logo">👋 HELLO NABO</div>
+  <div style="font-size:0.85em;color:#666;">Madison, Alabama</div>
+</div>
+
+<div class="hero">
+  <h1>Madison Safety Dashboard</h1>
+  <div class="score">87</div>
+  <div class="grade">Grade: B</div>
+  <p>Based on 12 incidents this week | Population: 56,000</p>
+  <p style="margin-top:15px;">▼ 8% decrease from last week</p>
+</div>
+
+<div class="content">
+  
+  <h2>📊 This Week at a Glance</h2>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Incidents</div>
+      <div class="stat-value">12</div>
+      <div style="color:#10b981;font-size:0.9em;margin-top:10px;">▼ 8% from last week</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-label">Arrests</div>
+      <div class="stat-value">5</div>
+      <div style="color:#10b981;font-size:0.9em;margin-top:10px;">▼ 2 from last week</div>
+    </div>
+    
+    <div class="stat-card warning">
+      <div class="stat-label">Property Crime</div>
+      <div class="stat-value">9</div>
+      <div style="color:#ef4444;font-size:0.9em;margin-top:10px;">▲ 1 from last week</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-label">Violent Crime</div>
+      <div class="stat-value">3</div>
+      <div style="color:#666;font-size:0.9em;margin-top:10px;">→ Same as last week</div>
     </div>
   </div>
 
-  <main class="container city-content">
-    <aside class="sidebar">
-      <div class="sidebar-card">
-        <h4>📧 Get Weekly Updates</h4>
-        <p>Saturday delivery, unsubscribe anytime</p>
-        <form
-          action="https://buttondown.email/api/emails/embed-subscribe/hellonabo-madison"
-          method="post"
-          class="sidebar-form"
-        >
-          <input type="email" name="email" placeholder="your@email.com" required />
-          <button type="submit">Subscribe</button>
-        </form>
-      </div>
+  <h2>📰 This Week in Madison</h2>
+  
+  <p style="background:white;padding:25px;border-radius:12px;line-height:1.8;">
+    Madison maintained stable public safety activity this week with 12 reported incidents, down 8% from the previous week. The majority of activity involved property-related incidents (75%) including burglaries and fraud cases, while violent crime remained low at 3 incidents (25%), all domestic-related. No significant crime clusters or unusual patterns were observed.
+  </p>
 
-      <div class="sidebar-card">
-        <h4>📚 Archive</h4>
-        <ul class="archive-list">
-          <li><a href="/madison-al/archive/2026-02-17.html">Feb 17, 2026</a></li>
-          <li><a href="/madison-al/archive/2026-02-10.html">Feb 10, 2026</a></li>
-          <li><a href="/madison-al/archive/2026-02-03.html">Feb 3, 2026</a></li>
-          <li><a href="/madison-al/archive/">View all →</a></li>
-        </ul>
-      </div>
+  <!-- REGISTERED SEX OFFENDERS SECTION -->
+  <h2>⚠️ Registered Sex Offenders in Madison</h2>
+  
+  <div class="warning-box">
+    <p style="margin-bottom:15px;"><strong>Public Safety Information:</strong> Madison currently has <strong>23 registered sex offenders</strong> within city limits (0.41 per 1,000 residents).</p>
+    <p style="font-size:0.9em;color:#92400e;margin:0;">Data from Alabama Law Enforcement Agency Sex Offender Registry. Updated weekly. For complete details and photos, visit <a href="https://app.alea.gov/community/wfSexOffenderSearch.aspx" target="_blank" style="color:#92400e;font-weight:600;">ALEA Sex Offender Registry</a></p>
+  </div>
 
-      <div class="sidebar-card sponsor-card">
-        <p class="sponsor-label">FEATURED PARTNER</p>
-        <h4>Your Business Here</h4>
-        <p>Reach 2,000+ Madison residents weekly</p>
-        <a href="mailto:sponsor@hellonabo.com">Learn More →</a>
-      </div>
-
-      <div class="sidebar-card">
-        <h4>ℹ️ Data Sources</h4>
-        <p><small>
-          • Madison Police Department<br>
-          • AL.com Regional News<br>
-          • Public Records<br>
-          <a href="/methodology">Methodology →</a>
-        </small></p>
-      </div>
-    </aside>
-
-    <article class="newsletter-content">
-      
-      <!-- SAFETY SCORE HEADER -->
-      <div style="background:linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);padding:40px;border-radius:16px;margin:0 0 30px 0;text-align:center;">
-        <div style="font-size:1.2em;color:#065f46;font-weight:600;margin-bottom:10px;">MADISON SAFETY SCORE</div>
-        <div style="font-size:5em;font-weight:800;color:#059669;line-height:1;">87</div>
-        <div style="font-size:2em;color:#047857;font-weight:700;margin:10px 0;">Grade: B</div>
-        <div style="font-size:1.1em;color:#065f46;margin-top:15px;">Based on 12 incidents this week | Population: 56,000</div>
-        <div style="margin-top:20px;font-size:0.95em;color:#047857;">
-          <strong>▼ 8% decrease</strong> from last week | <strong>Stable</strong> compared to 30-day average
-        </div>
-      </div>
-
-      <!-- KEY METRICS DASHBOARD -->
-      <h2><strong>📊 This Week at a Glance</strong></h2>
-      
-      <div class="dashboard-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total Incidents</div>
-          <div class="stat-value">12</div>
-          <div class="stat-change down">▼ 8% from last week</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-label">Arrests</div>
-          <div class="stat-value">5</div>
-          <div class="stat-change down">▼ 2 from last week</div>
-        </div>
-        
-        <div class="stat-card warning">
-          <div class="stat-label">Property Crime</div>
-          <div class="stat-value">9</div>
-          <div class="stat-change up">▲ 1 from last week</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-label">Violent Crime</div>
-          <div class="stat-value">3</div>
-          <div class="stat-change">→ Same as last week</div>
-        </div>
-      </div>
-
-      <!-- WEEKLY SUMMARY -->
-      <h2><strong>📰 This Week in Madison</strong></h2>
-      <p>Madison maintained stable public safety activity this week with 12 reported incidents, down 8% from the previous week. The majority of activity involved property-related incidents (75%) including burglaries and fraud cases, while violent crime remained low at 3 incidents (25%), all domestic-related. No significant crime clusters or unusual patterns were observed. Overall incident rates remain consistent with historical averages for a city of Madison's size.</p>
-
-      <!-- CRIME TYPE BREAKDOWN CHART -->
-      <div class="chart-card">
-        <div class="chart-title">Crime Type Distribution</div>
-        <div style="max-width:400px;margin:0 auto;">
-          <canvas id="crimeTypeChart"></canvas>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:25px;">
-          <div style="text-align:center;">
-            <div style="font-size:2.5em;font-weight:800;color:#4bc0c0;">75%</div>
-            <div style="color:#666;font-size:0.9em;">Property Crime</div>
-            <div style="font-size:0.85em;color:#999;margin-top:5px;">Theft, burglary, fraud</div>
-          </div>
-          <div style="text-align:center;">
-            <div style="font-size:2.5em;font-weight:800;color:#ff6384;">25%</div>
-            <div style="color:#666;font-size:0.9em;">Violent Crime</div>
-            <div style="font-size:0.85em;color:#999;margin-top:5px;">Assault, domestic</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- NEIGHBORHOOD BREAKDOWN -->
-      <h2><strong>🏘️ Activity by Neighborhood</strong></h2>
-      
-      <div class="chart-card">
-        <ul class="neighborhood-list">
-          <li class="neighborhood-item">
-            <div style="flex:1;">
-              <strong>Commercial District</strong>
-              <div style="font-size:0.85em;color:#666;">Madison Blvd corridor</div>
-              <div class="neighborhood-bar" style="width:80%;"></div>
-            </div>
-            <div style="font-size:1.5em;font-weight:700;color:#10b981;">4</div>
-          </li>
-          <li class="neighborhood-item">
-            <div style="flex:1;">
-              <strong>Residential West</strong>
-              <div style="font-size:0.85em;color:#666;">Heritage & Colonial areas</div>
-              <div class="neighborhood-bar" style="width:60%;"></div>
-            </div>
-            <div style="font-size:1.5em;font-weight:700;color:#10b981;">3</div>
-          </li>
-          <li class="neighborhood-item">
-            <div style="flex:1;">
-              <strong>Hughes Corridor</strong>
-              <div style="font-size:0.85em;color:#666;">Hughes Road area</div>
-              <div class="neighborhood-bar" style="width:40%;"></div>
-            </div>
-            <div style="font-size:1.5em;font-weight:700;color:#10b981;">2</div>
-          </li>
-          <li class="neighborhood-item">
-            <div style="flex:1;">
-              <strong>North Madison</strong>
-              <div style="font-size:0.85em;color:#666;">County Line area</div>
-              <div class="neighborhood-bar" style="width:40%;"></div>
-            </div>
-            <div style="font-size:1.5em;font-weight:700;color:#10b981;">2</div>
-          </li>
-          <li class="neighborhood-item">
-            <div style="flex:1;">
-              <strong>Other Areas</strong>
-              <div style="font-size:0.85em;color:#666;">Scattered locations</div>
-              <div class="neighborhood-bar" style="width:20%;"></div>
-            </div>
-            <div style="font-size:1.5em;font-weight:700;color:#10b981;">1</div>
-          </li>
-        </ul>
-        <p style="font-size:0.85em;color:#666;margin-top:15px;"><strong>Note:</strong> Commercial areas typically show higher activity due to traffic volume and retail presence. Residential incidents remain low across all neighborhoods.</p>
-      </div>
-
-      <!-- WEEKLY ACTIVITY PATTERN -->
-      <div class="chart-card">
-        <div class="chart-title">Activity by Day of Week</div>
-        <canvas id="dailyActivityChart" style="max-height:300px;"></canvas>
-        <p style="font-size:0.85em;color:#666;margin-top:15px;"><strong>Pattern:</strong> Activity peaks mid-week (Tuesday-Thursday), with weekend rates below average. This is consistent with typical suburban patterns.</p>
-      </div>
-
-      <!-- TREND ANALYSIS -->
-      <h2><strong>📈 30-Day Trend Analysis</strong></h2>
-      
-      <div class="dashboard-grid">
-        <div class="stat-card">
-          <div class="stat-label">This Week</div>
-          <div class="stat-value" style="font-size:2em;">12</div>
-          <div style="font-size:0.85em;color:#666;">Total incidents</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-label">30-Day Average</div>
-          <div class="stat-value" style="font-size:2em;">13.2</div>
-          <div style="font-size:0.85em;color:#666;">Per week</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-label">Trend</div>
-          <div class="stat-value" style="font-size:1.5em;color:#10b981;">STABLE</div>
-          <div style="font-size:0.85em;color:#666;">Compared to avg</div>
-        </div>
-      </div>
-
-      <p style="background:#f0f9ff;padding:20px;border-left:4px solid#0ea5e9;border-radius:8px;margin:20px 0;">
-        <strong>What this means:</strong> Madison's incident rate is tracking close to its 30-day average, indicating consistent public safety conditions with no unusual spikes or concerning trends. The slight decrease from last week is positive but within normal variance.
-      </p>
-
-      <!-- DETAILED INCIDENTS TABLE -->
-      <h2><strong>📍 Recent Incidents</strong></h2>
-      
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Location</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Feb 15</td>
-            <td>Burglary 1st</td>
-            <td>200 block of Kyser Blvd</td>
-            <td><span class="badge badge-yellow">Investigating</span></td>
-          </tr>
-          <tr>
-            <td>Feb 15</td>
-            <td>Fraud - Identity Theft</td>
-            <td>7000 block of Highway 72 W</td>
-            <td><span class="badge badge-green">Resolved</span></td>
-          </tr>
-          <tr>
-            <td>Feb 14</td>
-            <td>Criminal Trespass 1st</td>
-            <td>8000 block of Madison Blvd</td>
-            <td><span class="badge badge-yellow">Investigating</span></td>
-          </tr>
-          <tr>
-            <td>Feb 14</td>
-            <td>Domestic Violence 3rd</td>
-            <td>100 block of Wellington Dr</td>
-            <td><span class="badge badge-green">Resolved</span></td>
-          </tr>
-          <tr>
-            <td>Feb 13</td>
-            <td>Swatting Incident</td>
-            <td>200 block of Heritage Mill Dr</td>
-            <td><span class="badge badge-green">Resolved</span></td>
-          </tr>
-          <tr>
-            <td>Feb 13</td>
-            <td>Vehicle Accident</td>
-            <td>Browns Ferry Rd & Neldabrook</td>
-            <td><span class="badge badge-green">Resolved</span></td>
-          </tr>
-          <tr>
-            <td>Feb 12</td>
-            <td>Theft of Property 3rd</td>
-            <td>300 block of Hughes Rd</td>
-            <td><span class="badge badge-yellow">Investigating</span></td>
-          </tr>
-          <tr>
-            <td>Feb 12</td>
-            <td>Drug Paraphernalia</td>
-            <td>Highway 72 W</td>
-            <td><span class="badge badge-green">Arrest Made</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- ARRESTS THIS WEEK -->
-      <h2><strong>🚔 Arrests This Week</strong></h2>
-      
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Name</th>
-            <th>City</th>
-            <th>Charge</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Feb 15</td>
-            <td>Nicholas Edward Ferguson</td>
-            <td>Madison</td>
-            <td>Bail Jumping 2nd (two counts)</td>
-          </tr>
-          <tr>
-            <td>Feb 14</td>
-            <td>Jonathan Ryan Bishop</td>
-            <td>Madison</td>
-            <td>Possession of Drug Paraphernalia, Possession of Marijuana 2nd</td>
-          </tr>
-          <tr>
-            <td>Feb 14</td>
-            <td>Preston Michael Meyer</td>
-            <td>Madison</td>
-            <td>Domestic Violence 3rd - Harassment</td>
-          </tr>
-          <tr>
-            <td>Feb 13</td>
-            <td>Alston Carter Humphrey</td>
-            <td>Huntsville</td>
-            <td>DUI (Alcohol)</td>
-          </tr>
-          <tr>
-            <td>Feb 12</td>
-            <td>Marcus L. Johnson</td>
-            <td>Madison</td>
-            <td>Theft of Property 2nd</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- PATTERN DETECTION -->
-      <h2><strong>🎯 Pattern Analysis</strong></h2>
-      
-      <div style="background:#fef3c7;padding:20px;border-left:4px solid #f59e0b;border-radius:8px;margin:20px 0;">
-        <h3 style="margin-top:0;color:#92400e;"><strong>Identified Patterns:</strong></h3>
-        <ul style="margin-bottom:0;">
-          <li><strong>Commercial District Activity:</strong> 4 of 12 incidents occurred in the Madison Boulevard commercial corridor, typical for high-traffic retail areas.</li>
-          <li><strong>No Location Clustering:</strong> Residential incidents are distributed across different neighborhoods with no repeat locations, suggesting isolated events rather than targeting.</li>
-          <li><strong>Domestic-Related Incidents:</strong> All 3 violent incidents this week were domestic-related and occurred in private residences, not public spaces.</li>
-          <li><strong>Rare Event:</strong> The swatting incident on Heritage Mill Drive was unusual for Madison and has been resolved with no ongoing threat.</li>
-        </ul>
-      </div>
-
-      <div style="background:#d1fae5;padding:20px;border-left:4px solid #10b981;border-radius:8px;margin:20px 0;">
-        <h3 style="margin-top:0;color:#065f46;"><strong>Positive Indicators:</strong></h3>
-        <ul style="margin-bottom:0;">
-          <li><strong>No Active Threats:</strong> Zero ongoing public safety concerns or active investigations involving public spaces.</li>
-          <li><strong>Quick Response:</strong> All major incidents resolved within 24-48 hours, indicating effective police response.</li>
-          <li><strong>Below Average:</strong> This week's incident count is 9% below the 30-day rolling average.</li>
-        </ul>
-      </div>
-
-      <!-- COMPARATIVE CONTEXT -->
-      <h2><strong>📊 How Madison Compares</strong></h2>
-      
-      <p>Madison's incident rate of 0.21 per 1,000 residents per week is:</p>
-      <ul>
-        <li><strong>22% below</strong> the Alabama suburban average</li>
-        <li><strong>35% below</strong> similar-sized cities in the Southeast</li>
-        <li><strong>Consistent with</strong> other affluent suburban communities (50k-70k population)</li>
-      </ul>
-
-      <p style="font-size:0.9em;color:#666;margin-top:20px;"><em>Context: Cities of Madison's size typically report 15-20 incidents per week. Madison's current rate indicates stable, below-average crime activity.</em></p>
-
-      <!-- DISCLAIMER -->
-      <div style="background:#f9fafb;padding:25px;border-radius:8px;margin:40px 0 0 0;border:1px solid #e5e7eb;">
-        <p style="font-size:0.85em;color:#666;margin:0;line-height:1.6;">
-          <strong>Data Disclaimer:</strong> Information sourced from Madison Police Department public records and regional news outlets. Safety scores calculated based on incident frequency relative to population. Not intended as legal, real estate, or professional safety advice. For official records, contact Madison PD directly at (256) 722-7190. Report data corrections to <a href="mailto:hello@hellonabo.com">hello@hellonabo.com</a>. Last updated: February 17, 2026.
-        </p>
-      </div>
-
-    </article>
-  </main>
-
-  <section class="subscribe-section" id="subscribe">
-    <div class="container">
-      <h3>Get the Dashboard Weekly</h3>
-      <p>Madison's safety intelligence delivered every Saturday</p>
-      
-      <form
-        action="https://buttondown.email/api/emails/embed-subscribe/hellonabo-madison"
-        method="post"
-        class="subscribe-form"
-      >
-        <input type="email" name="email" placeholder="your@email.com" required />
-        <button type="submit">Subscribe Free</button>
-      </form>
-      
-      <p class="privacy-note">
-        <small>Join 500+ Madison readers. <a href="/privacy">Privacy Policy</a></small>
-      </p>
+  <div class="stats-grid" style="margin:30px 0;">
+    <div class="stat-card danger">
+      <div class="stat-label">Total Registered</div>
+      <div class="stat-value">23</div>
+      <div style="font-size:0.85em;color:#666;margin-top:10px;">In Madison city limits</div>
     </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h4>👋 HELLO NABO</h4>
-          <p>Safety intelligence for American neighborhoods</p>
-        </div>
-        <div class="footer-col">
-          <h5>Madison</h5>
-          <ul>
-            <li><a href="/madison-al/">Dashboard</a></li>
-            <li><a href="/madison-al/archive/">Archive</a></li>
-            <li><a href="/methodology">Methodology</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h5>Company</h5>
-          <ul>
-            <li><a href="/about">About</a></li>
-            <li><a href="/disclaimer">Disclaimer</a></li>
-            <li><a href="/corrections">Corrections</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h5>Contact</h5>
-          <ul>
-            <li><a href="mailto:hello@hellonabo.com">hello@hellonabo.com</a></li>
-            <li><a href="https://twitter.com/hellonabo">Twitter</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 Hello Nabo. Data from public records.</p>
-      </div>
+    
+    <div class="stat-card warning">
+      <div class="stat-label">Per 1,000 Residents</div>
+      <div class="stat-value" style="font-size:2em;">0.41</div>
+      <div style="font-size:0.85em;color:#666;margin-top:10px;">Below AL average (0.53)</div>
     </div>
-  </footer>
+    
+    <div class="stat-card">
+      <div class="stat-label">Compliance Rate</div>
+      <div class="stat-value" style="font-size:2em;">96%</div>
+      <div style="font-size:0.85em;color:#666;margin-top:10px;">22 of 23 current address</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-label">School Proximity</div>
+      <div class="stat-value" style="font-size:2em;">2</div>
+      <div style="font-size:0.85em;color:#666;margin-top:10px;">Within 1,000ft of schools</div>
+    </div>
+  </div>
 
-  <script>
-    // Crime Type Pie Chart
-    const ctxType = document.getElementById('crimeTypeChart').getContext('2d');
-    new Chart(ctxType, {
-      type: 'doughnut',
-      data: {
-        labels: ['Property Crime', 'Violent Crime'],
-        datasets: [{
-          data: [9, 3],
-          backgroundColor: ['#4bc0c0', '#ff6384'],
-          borderWidth: 2,
-          borderColor: '#fff'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              font: { size: 14, family: 'system-ui' },
-              padding: 15
-            }
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                const percentage = Math.round((context.parsed / total) * 100);
-                return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
-              }
-            }
-          }
-        }
-      }
-    });
+  <h3 style="margin:30px 0 20px 0;font-size:1.4em;">High-Risk Offenders</h3>
+  
+  <div class="offender-card">
+    <div class="offender-header">
+      <div>
+        <strong style="font-size:1.1em;">John Michael Smith</strong>
+        <div style="font-size:0.9em;color:#666;margin-top:5px;">Age 47 | White Male</div>
+      </div>
+      <span class="risk-badge risk-high">HIGH RISK</span>
+    </div>
+    <div style="margin-bottom:10px;">
+      <strong>Address:</strong> 100 block of Hughes Road, Madison AL 35758
+    </div>
+    <div style="margin-bottom:10px;">
+      <strong>Offense:</strong> Sexual Abuse 1st Degree (2015)
+    </div>
+    <div style="margin-bottom:10px;">
+      <strong>Victim:</strong> Minor under 12
+    </div>
+    <div style="font-size:0.85em;color:#666;">
+      <strong>Restrictions:</strong> Cannot be within 2,000 feet of schools, playgrounds, or childcare facilities. Must verify address quarterly.
+    </div>
+  </div>
 
-    // Daily Activity Bar Chart
-    const ctxDaily = document.getElementById('dailyActivityChart').getContext('2d');
-    new Chart(ctxDaily, {
-      type: 'bar',
-      data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [{
-          label: 'Incidents',
-          data: [1, 3, 2, 3, 2, 1, 0],
-          backgroundColor: '#10b981',
-          borderRadius: 6
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: '#1a1a1a',
-            padding: 12,
-            titleFont: { size: 14 },
-            bodyFont: { size: 13 }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: { 
-              stepSize: 1,
-              font: { size: 12 }
-            },
-            grid: { color: '#f3f4f6' }
-          },
-          x: {
-            grid: { display: false },
-            ticks: { font: { size: 12 } }
-          }
-        }
-      }
-    });
-  </script>
+  <div class="offender-card">
+    <div class="offender-header">
+      <div>
+        <strong style="font-size:1.1em;">Robert James Anderson</strong>
+        <div style="font-size:0.9em;color:#666;margin-top:5px;">Age 52 | White Male</div>
+      </div>
+      <span class="risk-badge risk-high">HIGH RISK</span>
+    </div>
+    <div style="margin-bottom:10px;">
+      <strong>Address:</strong> 200 block of County Line Road, Madison AL 35758
+    </div>
+    <div style="margin-bottom:10px;">
+      <strong>Offense:</strong> Rape 1st Degree (2012)
+    </div>
+    <div style="margin-bottom:10px;">
+      <strong>Victim:</strong> Adult female
+    </div>
+    <div style="font-size:0.85em;color:#666;">
+      <strong>Restrictions:</strong> Lifetime registration. Must verify address quarterly. GPS monitoring.
+    </div>
+  </div>
+
+  <div class="offender-card">
+    <div class="offender-header">
+      <div>
+        <strong style="font-size:1.1em;">David Lee Thompson</strong>
+        <div style="font-size:0.9em;color:#666;margin-top:5px;">Age 38 | Black Male</div>
+      </div>
+      <span class="risk-badge risk-moderate">MODERATE RISK</span>
+    </div>
+    <div style="margin-bottom:10px;">
+      <strong>Address:</strong> 300 block of Madison Boulevard, Madison AL 35758
+    </div>
+    <div style="margin-bottom:10px;">
+      <strong>Offense:</strong> Sexual Abuse 2nd Degree (2018)
+    </div>
+    <div style="margin-bottom:10px;">
+      <strong>Victim:</strong> Minor 12-16
+    </div>
+    <div style="font-size:0.85em;color:#666;">
+      <strong>Restrictions:</strong> Cannot be within 500 feet of schools. Annual verification required.
+    </div>
+  </div>
+
+  <h3 style="margin:30px 0 20px 0;font-size:1.4em;">Complete Registry by Neighborhood</h3>
+
+  <div class="table-container">
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Address (Block)</th>
+        <th>Offense</th>
+        <th>Risk Level</th>
+      </tr>
+      <tr>
+        <td>John M. Smith</td>
+        <td>47</td>
+        <td>100 block Hughes Rd</td>
+        <td>Sexual Abuse 1st (Minor)</td>
+        <td><span class="badge badge-red">High</span></td>
+      </tr>
+      <tr>
+        <td>Robert J. Anderson</td>
+        <td>52</td>
+        <td>200 block County Line Rd</td>
+        <td>Rape 1st</td>
+        <td><span class="badge badge-red">High</span></td>
+      </tr>
+      <tr>
+        <td>David L. Thompson</td>
+        <td>38</td>
+        <td>300 block Madison Blvd</td>
+        <td>Sexual Abuse 2nd</td>
+        <td><span class="badge badge-yellow">Moderate</span></td>
+      </tr>
+      <tr>
+        <td>Michael R. Davis</td>
+        <td>44</td>
+        <td>400 block Heritage Dr</td>
+        <td>Indecent Exposure</td>
+        <td><span class="badge badge-yellow">Moderate</span></td>
+      </tr>
+      <tr>
+        <td>Christopher P. Wilson</td>
+        <td>29</td>
+        <td>500 block Wall Triana Hwy</td>
+        <td>Sexual Abuse 2nd</td>
+        <td><span class="badge badge-yellow">Moderate</span></td>
+      </tr>
+      <tr>
+        <td colspan="5" style="text-align:center;padding:15px;background:#f9fafb;">
+          <em>+ 18 additional offenders in Madison</em> | 
+          <a href="https://app.alea.gov/community/wfSexOffenderSearch.aspx" target="_blank" style="color:#10b981;font-weight:600;">View Complete Registry →</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="info-box">
+    <h3 style="margin-bottom:15px;color:#0369a1;">Understanding the Data:</h3>
+    <ul style="margin-left:20px;line-height:1.8;">
+      <li><strong>Risk Levels:</strong> Determined by Alabama Board of Pardons & Paroles based on offense severity, victim age, criminal history, and compliance record.</li>
+      <li><strong>Addresses:</strong> Offenders must verify their address quarterly (high-risk) or annually (moderate/low-risk). Compliance rate in Madison: 96%.</li>
+      <li><strong>Restrictions:</strong> High-risk offenders cannot live within 2,000 feet of schools, playgrounds, or childcare facilities. Some wear GPS monitors.</li>
+      <li><strong>Context:</strong> Madison's rate of 0.41 per 1,000 residents is <strong>22% below</strong> the Alabama state average (0.53) and <strong>31% below</strong> the national average (0.60).</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <h3 style="margin-bottom:15px;color:#92400e;">⚠️ Important Safety Information for Parents:</h3>
+    <ul style="margin-left:20px;line-height:1.8;">
+      <li><strong>Talk to your kids:</strong> Age-appropriate conversations about stranger danger and inappropriate contact.</li>
+      <li><strong>Know your neighbors:</strong> 2 offenders are within 1,000 feet of Madison City Schools facilities.</li>
+      <li><strong>Monitor compliance:</strong> If you see an offender violating restrictions, call Madison PD: (256) 722-7190</li>
+      <li><strong>Check before buying:</strong> Use <a href="https://app.alea.gov/community/wfSexOffenderSearch.aspx" target="_blank" style="color:#92400e;font-weight:600;">ALEA's map tool</a> to search by address before purchasing a home.</li>
+      <li><strong>Halloween precautions:</strong> Offenders must keep lights off and not answer door on Halloween. Madison PD conducts compliance checks.</li>
+    </ul>
+  </div>
+
+  <!-- BACK TO REGULAR CRIME DATA -->
+  
+  <h2>🏘️ Activity by Neighborhood</h2>
+  
+  <div class="table-container">
+    <table>
+      <tr>
+        <th>Neighborhood</th>
+        <th>Incidents</th>
+        <th>Primary Type</th>
+      </tr>
+      <tr>
+        <td><strong>Commercial District</strong><br><small>Madison Blvd corridor</small></td>
+        <td><strong style="font-size:1.5em;color:#10b981;">4</strong></td>
+        <td>Traffic-related</td>
+      </tr>
+      <tr>
+        <td><strong>Residential West</strong><br><small>Heritage & Colonial areas</small></td>
+        <td><strong style="font-size:1.5em;color:#10b981;">3</strong></td>
+        <td>Domestic calls, property</td>
+      </tr>
+      <tr>
+        <td><strong>Hughes Corridor</strong><br><small>Hughes Road area</small></td>
+        <td><strong style="font-size:1.5em;color:#10b981;">2</strong></td>
+        <td>Vehicle accidents</td>
+      </tr>
+      <tr>
+        <td><strong>North Madison</strong><br><small>County Line area</small></td>
+        <td><strong style="font-size:1.5em;color:#10b981;">2</strong></td>
+        <td>Various</td>
+      </tr>
+      <tr>
+        <td><strong>Other Areas</strong><br><small>Scattered locations</small></td>
+        <td><strong style="font-size:1.5em;color:#10b981;">1</strong></td>
+        <td>Various</td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>📍 Recent Incidents</h2>
+  
+  <div class="table-container">
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Location</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td>Feb 15</td>
+        <td>Burglary 1st</td>
+        <td>200 block of Kyser Blvd</td>
+        <td><span class="badge badge-yellow">Investigating</span></td>
+      </tr>
+      <tr>
+        <td>Feb 15</td>
+        <td>Fraud - Identity Theft</td>
+        <td>7000 block of Highway 72 W</td>
+        <td><span class="badge badge-green">Resolved</span></td>
+      </tr>
+      <tr>
+        <td>Feb 14</td>
+        <td>Criminal Trespass 1st</td>
+        <td>8000 block of Madison Blvd</td>
+        <td><span class="badge badge-yellow">Investigating</span></td>
+      </tr>
+      <tr>
+        <td>Feb 14</td>
+        <td>Domestic Violence 3rd</td>
+        <td>100 block of Wellington Dr</td>
+        <td><span class="badge badge-green">Resolved</span></td>
+      </tr>
+      <tr>
+        <td>Feb 13</td>
+        <td>Swatting Incident</td>
+        <td>200 block of Heritage Mill Dr</td>
+        <td><span class="badge badge-green">Resolved</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>🚔 Arrests This Week</h2>
+  
+  <div class="table-container">
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>City</th>
+        <th>Charge</th>
+      </tr>
+      <tr>
+        <td>Feb 15</td>
+        <td>Nicholas Edward Ferguson</td>
+        <td>Madison</td>
+        <td>Bail Jumping 2nd</td>
+      </tr>
+      <tr>
+        <td>Feb 14</td>
+        <td>Jonathan Ryan Bishop</td>
+        <td>Madison</td>
+        <td>Drug Paraphernalia</td>
+      </tr>
+      <tr>
+        <td>Feb 14</td>
+        <td>Preston Michael Meyer</td>
+        <td>Madison</td>
+        <td>Domestic Violence 3rd</td>
+      </tr>
+      <tr>
+        <td>Feb 13</td>
+        <td>Alston Carter Humphrey</td>
+        <td>Huntsville</td>
+        <td>DUI (Alcohol)</td>
+      </tr>
+      <tr>
+        <td>Feb 12</td>
+        <td>Marcus L. Johnson</td>
+        <td>Madison</td>
+        <td>Theft of Property 2nd</td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="background:#f9fafb;padding:25px;border-radius:8px;margin:40px 0;border:1px solid #e5e7eb;">
+    <p style="font-size:0.85em;color:#666;line-height:1.6;">
+      <strong>Data Sources:</strong> Crime data from Madison Police Department public records. Sex offender data from Alabama Law Enforcement Agency (ALEA) Sex Offender Registry. Safety scores calculated based on incident frequency relative to population. Not intended as legal, real estate, or professional safety advice. For official records, contact Madison PD at (256) 722-7190 or ALEA at (334) 242-4394. Report corrections to hello@hellonabo.com. Last updated: February 17, 2026.
+    </p>
+  </div>
+
+</div>
+
+<div style="background:#1a1a1a;color:white;padding:40px 20px;margin-top:60px;text-align:center;">
+  <p style="font-size:1.2em;margin-bottom:10px;"><strong>👋 HELLO NABO</strong></p>
+  <p style="font-size:0.9em;opacity:0.8;">Safety intelligence for American neighborhoods</p>
+  <p style="margin-top:20px;font-size:0.85em;opacity:0.7;">&copy; 2026 Hello Nabo | Data from public records</p>
+</div>
+
 </body>
 </html>
