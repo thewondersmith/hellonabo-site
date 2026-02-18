@@ -1,3 +1,6 @@
+import os
+import sys
+import urllib3
 def main():
     """Main execution"""
     import urllib3
