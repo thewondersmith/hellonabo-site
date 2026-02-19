@@ -5,106 +5,75 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Madison, Alabama Safety Dashboard | Hello Nabo</title>
 <style>
-body { font-family: -apple-system, sans-serif; margin: 0; padding: 0; background: #f9fafb; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f9fafb; color: #1a1a1a; line-height: 1.6; }
 .hero { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 60px 20px; text-align: center; }
 .score { font-size: 6em; font-weight: 800; margin: 20px 0; }
 .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmin(250px, 1fr)); gap: 20px; margin: 30px 0; }
 .stat-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 .stat-value { font-size: 3em; font-weight: 800; color: #10b981; }
-.table-container { background: white; padding: 30px; border-radius: 12px; margin: 20px 0; }
-table { width: 100%; border-collapse: collapse; }
-th { background: #f3f4f6; padding: 14px; text-align: left; border-bottom: 2px solid #e5e7eb; }
-td { padding: 14px; border-bottom: 1px solid #e5e7eb; }
+.stat-label { font-size: 0.9em; color: #666; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
 h2 { margin: 40px 0 20px; font-size: 1.8em; }
+.table-container { background: white; padding: 30px; border-radius: 12px; margin: 20px 0; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { background: #f3f4f6; padding: 14px; text-align: left; font-weight: 600; border-bottom: 2px solid #e5e7eb; }
+td { padding: 14px; border-bottom: 1px solid #e5e7eb; }
+.info-box { background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 20px 0; border-radius: 8px; }
+.warning-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; margin: 20px 0; border-radius: 8px; }
+footer { background: #1a1a1a; color: white; padding: 40px 20px; text-align: center; margin-top: 60px; }
 </style>
 </head>
 <body>
 
 <div class="hero">
   <h1>Madison, Alabama</h1>
-  <div class="score">87</div>
-  <div style="font-size:2em;">Safety Grade: B</div>
-  <p>Based on 12 incidents this week | Population: 56,000</p>
-  <p style="margin-top:15px;">Updated: February 19, 2026</p>
+  <p style="font-size:1.2em;margin-top:20px;">Weekly Safety Dashboard</p>
+  <p style="margin-top:10px;">Population: 56,000 | Updated: February 19, 2026</p>
 </div>
 
 <div class="container">
-  <h2>This Week's Overview</h2>
+  
+  <h2>This Week's Data</h2>
   
   <div class="stats-grid">
     <div class="stat-card">
-      <div style="font-size:0.9em;color:#666;text-transform:uppercase;">Total Incidents</div>
-      <div class="stat-value">12</div>
-    </div>
-    
-    <div class="stat-card">
-      <div style="font-size:0.9em;color:#666;text-transform:uppercase;">Arrests Made</div>
-      <div class="stat-value">5</div>
-    </div>
-    
-    <div class="stat-card">
-      <div style="font-size:0.9em;color:#666;text-transform:uppercase;">Property Crime</div>
+      <div class="stat-label">Total Arrests</div>
       <div class="stat-value">0</div>
     </div>
     
     <div class="stat-card">
-      <div style="font-size:0.9em;color:#666;text-transform:uppercase;">Violent Crime</div>
+      <div class="stat-label">Violent Crime</div>
+      <div class="stat-value">0</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-label">Property Crime</div>
+      <div class="stat-value">0</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-label">Other Arrests</div>
       <div class="stat-value">0</div>
     </div>
   </div>
 
-  <h2>The Bottom Line</h2>
-  <div style="background:white;padding:25px;border-radius:12px;line-height:1.8;">
-    <pre style="white-space:pre-wrap;font-family:inherit;">**The Bottom Line**
-
-**Safe to Walk Around**
-This week showed zero violent crimes in Madison, indicating no stranger-on-stranger violence or threats to personal safety. Residents can feel confident walking around the community without concern for violent encounters.
-
-**No Crime Hot Spots**
-With zero property crimes and violent crimes reported, there are no concerning crime patterns or hot spots to avoid. The 12 total incidents appear to be routine matters spread throughout the city.
-
-**Nothing Left Unresolved**
-While no arrests were made this week, this aligns with the absence of serious criminal activity requiring immediate law enforcement action. The lack of violent and property crimes suggests most incidents were likely minor violations or administrative matters.
-
-**Normal City Activity**
-For a suburban city of 56,000 residents, having only 12 total incidents with no serious crimes is exceptionally low and indicates normal, peaceful community activity. This level of incident reports is typical for a well-managed suburban area.
-
-**Should you be worried? No.** Madison's crime data this week shows an remarkably safe community environment with no violent or property crimes reported. The minimal incident count relative to the population size reflects a stable, secure suburban setting where residents can go about their daily lives without safety concerns.</pre>
-  </div>
+  <div class="warning-box"><strong>Analysis pending:</strong> Waiting for arrest data to generate analysis.</div>
 
   <h2>Registered Sex Offenders</h2>
-  <div style="background:#fef3c7;padding:20px;border-radius:8px;margin:20px 0;">
+  <div class="warning-box">
     <p><strong>23 registered offenders</strong> in Madison (0.41 per 1,000 residents)</p>
-    <p style="margin-top:10px;font-size:0.9em;">
-      <a href="https://app.alea.gov/community/wfSexOffenderSearch.aspx" target="_blank">View Official ALEA Registry →</a>
+    <p style="margin-top:10px;">
+      <a href="https://app.alea.gov/community/wfSexOffenderSearch.aspx" target="_blank" style="color:#92400e;font-weight:600;">View Official ALEA Registry →</a>
     </p>
-  </div>
-
-  <h2>Recent Incidents</h2>
-  <div class="table-container">
-    <table>
-      <tr>
-        <th>Date</th>
-        <th>Type</th>
-        <th>Location</th>
-        <th>Status</th>
-      </tr>
-      <tr><td colspan='4'>No incidents data available</td></tr>
-    </table>
   </div>
 
   <h2>Arrests This Week</h2>
   <div class="table-container">
     <table>
-      <tr>
-        <th>Date</th>
-        <th>Name</th>
-        <th>City</th>
-        <th>Charge</th>
-      </tr>
-      <tr><td colspan='4'>No arrest data available</td></tr>
-    </table>
+<tr><th>Date</th><th>Name</th><th>City</th><th>Charge</th></tr>
+<tr><td colspan='4' style='text-align:center;padding:40px;color:#666;'>No arrest data available this week</td></tr>
+</table>
   </div>
 
   <div style="background:#f9fafb;padding:25px;border-radius:8px;margin:40px 0;border:1px solid #e5e7eb;">
@@ -117,10 +86,10 @@ For a suburban city of 56,000 residents, having only 12 total incidents with no 
 
 </div>
 
-<div style="background:#1a1a1a;color:white;padding:40px 20px;text-align:center;">
+<footer>
   <p style="font-size:1.2em;font-weight:700;">HELLO NABO</p>
   <p style="font-size:0.9em;opacity:0.8;">Safety intelligence for American neighborhoods</p>
-</div>
+</footer>
 
 </body>
 </html>
